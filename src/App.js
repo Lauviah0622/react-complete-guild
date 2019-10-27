@@ -11,32 +11,76 @@ class App extends Component {
       { name: "Jack", age: "12" },
       { name: "Jackw", age: "23" },
       { name: "Jacks", age: "34" }
-    ]
+    ],
+    showPersons: false
   }
 
 
   // class mehthod
   // 因為是arrow funciton所以沒有this, 不會指向class App
-  switchNameHandler = () => { // 名稱後面要加上handler 讓其他人知道這不會被主動呼叫
+  switchNameHandler = (newName) => { // 名稱後面要加上handler 讓其他人知道這不會被主動呼叫
     this.setState({
       persons: [
-        { name: "Jacka", age: "123" },
-        { name: "Jacks", age: "234" },
-        { name: "Jackd", age: "345" }
+        { name: newName, age: "23" },
+        { name: "Jacks", age: "34" },
+        { name: "Jackd", age: "45" }
+      ]    
+    })
+  }
+
+  nameChangeHandler = (event) => {
+    this.setState({
+      persons: [
+        { name: event.target.value, age: "23" },
+        { name: "Jacks", age: "34" },
+        { name: "Jackd", age: "45" }
       ]
     })
+  }
 
+  toggleShowPersons = () => {
+    let showPersons = this.state.showPersons;
+    this.setState({
+      showPersons: !showPersons
+    })
   }
 
   render() {
+
+    let style = {
+      backgroundColor: "#ccc",
+      border: "4px solid #ffcccc",
+      borderRadius: '4px',
+      padding: "8px",
+      cursr: 'pointer',
+      font: 'inherit'
+    }
+
     return (
       <div className="App">
         <h1>HI, I'm react app</h1>
         <p>Hello mother fucker</p>
-        <button onClick={this.switchNameHandler}>Switch Name</button>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} >I am not child!!!</Person>
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age} />
-        <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
+        <button style={style}
+          onClick={this.toggleShowPersons}>Switch Name</button>
+        {/* 用arrow funciton會比較慢 */}
+
+        {
+          this.state.showPersons ?
+            <div>
+              <Person
+                name={this.state.persons[0].name}
+                age={this.state.persons[0].age}
+                click={this.switchNameHandler.bind(this, "Ohhhhhhhhhhhhhh!")}
+                changed={this.nameChangeHandler}>I am not child!!!</Person>
+              {/* 用bind會執行的比較快 */}
+              <Person
+                name={this.state.persons[1].name}
+                age={this.state.persons[1].age} />
+              <Person
+                name={this.state.persons[2].name}
+                age={this.state.persons[2].age} />
+            </div> : null
+        }
       </div>
       // React.createElement('div', {className: 'App'}, 'h1', 'h2', React.createElement('div', null, 'h1'))
     );
