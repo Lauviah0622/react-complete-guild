@@ -2,7 +2,7 @@
 
 ### 10/27
 ch.41
-
+ch.44 react Hook version
 ### 10/24
 ch.36 
 

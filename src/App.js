@@ -3,14 +3,14 @@ import './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
-  
+
   // state只有 class(extends Component)可以用, 如果function Component要用類似功能要用react hook
   // state一改變 整個react DOM都會rerender
   state = {
     persons: [
-      { name: "Jack", age:"12" },
-      { name: "Jackw", age:"23" },
-      { name: "Jacks", age:"34" }
+      { name: "Jack", age: "12" },
+      { name: "Jackw", age: "23" },
+      { name: "Jacks", age: "34" }
     ]
   }
 
@@ -18,10 +18,16 @@ class App extends Component {
   // class mehthod
   // 因為是arrow funciton所以沒有this, 不會指向class App
   switchNameHandler = () => { // 名稱後面要加上handler 讓其他人知道這不會被主動呼叫
-    console.log('clicked!!')
+    this.setState({
+      persons: [
+        { name: "Jacka", age: "123" },
+        { name: "Jacks", age: "234" },
+        { name: "Jackd", age: "345" }
+      ]
+    })
 
   }
-  
+
   render() {
     return (
       <div className="App">
