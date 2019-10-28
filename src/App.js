@@ -24,7 +24,7 @@ class App extends Component {
         { name: newName, age: "23" },
         { name: "Jacks", age: "34" },
         { name: "Jackd", age: "45" }
-      ]    
+      ]
     })
   }
 
@@ -56,33 +56,37 @@ class App extends Component {
       font: 'inherit'
     }
 
+    let persons = null;
+
+    // 將dom內容放在return外做if判斷
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age}
+            click={this.switchNameHandler.bind(this, "Ohhhhhhhhhhhhhh!")}
+            changed={this.nameChangeHandler}>I am not child!!!</Person>
+          {/* 用bind會執行的比較快 */}
+          <Person
+            name={this.state.persons[1].name}
+            age={this.state.persons[1].age} />
+          <Person
+            name={this.state.persons[2].name}
+            age={this.state.persons[2].age} />
+        </div>
+      )
+    }
+
     return (
       <div className="App">
         <h1>HI, I'm react app</h1>
         <p>Hello mother fucker</p>
         <button style={style}
-          onClick={this.toggleShowPersons}>Switch Name</button>
+          onClick={this.toggleShowPersons}>Show Name</button>
         {/* 用arrow funciton會比較慢 */}
-
-        {
-          this.state.showPersons ?
-            <div>
-              <Person
-                name={this.state.persons[0].name}
-                age={this.state.persons[0].age}
-                click={this.switchNameHandler.bind(this, "Ohhhhhhhhhhhhhh!")}
-                changed={this.nameChangeHandler}>I am not child!!!</Person>
-              {/* 用bind會執行的比較快 */}
-              <Person
-                name={this.state.persons[1].name}
-                age={this.state.persons[1].age} />
-              <Person
-                name={this.state.persons[2].name}
-                age={this.state.persons[2].age} />
-            </div> : null
-        }
+        {persons}
       </div>
-      // React.createElement('div', {className: 'App'}, 'h1', 'h2', React.createElement('div', null, 'h1'))
     );
   }
 }
