@@ -55,7 +55,7 @@ class App extends Component {
   render() {
 
     let style = {
-      backgroundColor: "#ccc",
+      backgroundColor: "green",
       border: "4px solid #ffcccc",
       borderRadius: '4px',
       padding: "8px",
@@ -80,6 +80,8 @@ class App extends Component {
           })}
         </div>
       )
+
+      style.backgroundColor = 'red'
     }
 
     return (
