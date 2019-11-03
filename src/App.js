@@ -8,34 +8,31 @@ class App extends Component {
   // state一改變 整個react DOM都會rerender
   state = {
     persons: [
-      { name: "Jack", age: "12" },
-      { name: "Jackw", age: "23" },
-      { name: "Jacks", age: "34" }
+      { id: "qtasd" ,name: "Jack", age: "12" },
+      { id: "qweqt" ,name: "Jackw", age: "23" },
+      { id: "qeyyh" ,name: "Jacks", age: "34" }
     ],
     showPersons: false
   }
 
 
   // class mehthod
-  // 因為是arrow funciton所以沒有this, 不會指向class App
-  switchNameHandler = (newName) => { // 名稱後面要加上handler 讓其他人知道這不會被主動呼叫
-    this.setState({
-      persons: [
-        { name: newName, age: "23" },
-        { name: "Jacks", age: "34" },
-        { name: "Jackd", age: "45" }
-      ]
-    })
-  }
+  nameChangeHandler = (event, id) => {
+    console.log(event.target.value)
+    console.dir(event.target.dataset)
+    const personIndex = this.state.persons.findIndex(person => {
+      return person.id === id
+    });
+    // copy person
+    let persons = [...this.state.persons];
+    // change person name
+    if (event.target.dataset.tag === 'name') {
+      persons[personIndex].name = event.target.value;
+    } else if (event.target.dataset.tag !== 'name') {
+      persons[personIndex].age = event.target.value;            
+    }
 
-  nameChangeHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: event.target.value, age: "23" },
-        { name: "Jacks", age: "34" },
-        { name: "Jackd", age: "45" }
-      ]
-    })
+    this.setState({persons: persons})
   }
 
   toggleShowPersons = () => {
@@ -43,6 +40,16 @@ class App extends Component {
     this.setState({
       showPersons: !showPersons
     })
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons]
+    // spread operator可以return array東西
+    persons.splice(personIndex, 1)
+    // 這裡直接更改原資料，會造成問題，應該先複製一個資料的副本再做更動
+    this.setState({persons: persons})
+    console.log(persons)
   }
 
   render() {
@@ -62,18 +69,15 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-            click={this.switchNameHandler.bind(this, "Ohhhhhhhhhhhhhh!")}
-            changed={this.nameChangeHandler}>I am not child!!!</Person>
-          {/* 用bind會執行的比較快 */}
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age} />
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age} />
+          {this.state.persons.map((person, index) => {
+            return <Person
+            key={person.id}
+            click={() => this.deletePersonHandler(index)}
+            name={person.name}
+            age={person.age}
+            changed={(event) => this.nameChangeHandler(event, person.id)}
+            />
+          })}
         </div>
       )
     }
