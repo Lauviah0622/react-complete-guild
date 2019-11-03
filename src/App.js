@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -8,9 +9,9 @@ class App extends Component {
   // state一改變 整個react DOM都會rerender
   state = {
     persons: [
-      { id: "qtasd" ,name: "Jack", age: "12" },
-      { id: "qweqt" ,name: "Jackw", age: "23" },
-      { id: "qeyyh" ,name: "Jacks", age: "34" }
+      { id: "qtasd", name: "Jack", age: "12" },
+      { id: "qweqt", name: "Jackw", age: "23" },
+      { id: "qeyyh", name: "Jacks", age: "34" }
     ],
     showPersons: false
   }
@@ -29,10 +30,10 @@ class App extends Component {
     if (event.target.dataset.tag === 'name') {
       persons[personIndex].name = event.target.value;
     } else if (event.target.dataset.tag !== 'name') {
-      persons[personIndex].age = event.target.value;            
+      persons[personIndex].age = event.target.value;
     }
 
-    this.setState({persons: persons})
+    this.setState({ persons: persons })
   }
 
   toggleShowPersons = () => {
@@ -48,19 +49,24 @@ class App extends Component {
     // spread operator可以return array東西
     persons.splice(personIndex, 1)
     // 這裡直接更改原資料，會造成問題，應該先複製一個資料的副本再做更動
-    this.setState({persons: persons})
+    this.setState({ persons: persons })
     console.log(persons)
   }
 
   render() {
 
     let style = {
-      backgroundColor: "#ccc",
-      border: "4px solid #ffcccc",
+      backgroundColor: "green",
       borderRadius: '4px',
       padding: "8px",
       cursr: 'pointer',
-      font: 'inherit'
+      font: 'inherit',
+      color: 'white',
+      transitionDuration: '0.4s',
+      ':hover': {
+        backgroundColor: 'lightgreen'
+      }
+
     }
 
     let persons = null;
@@ -71,28 +77,52 @@ class App extends Component {
         <div>
           {this.state.persons.map((person, index) => {
             return <Person
-            key={person.id}
-            click={() => this.deletePersonHandler(index)}
-            name={person.name}
-            age={person.age}
-            changed={(event) => this.nameChangeHandler(event, person.id)}
+              key={person.id}
+              click={() => this.deletePersonHandler(index)}
+              name={person.name}
+              age={person.age}
+              changed={(event) => this.nameChangeHandler(event, person.id)}
             />
           })}
         </div>
       )
+
+      style.backgroundColor = "red";
+      style[":hover"] = {
+        backgroundColor: 'salmon'
+      }
+    }
+
+
+    let classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
+    }
+
+    if (this.state.persons.length === 0) {
+      classes.push('bold');
     }
 
     return (
-      <div className="App">
-        <h1>HI, I'm react app</h1>
-        <p>Hello mother fucker</p>
-        <button style={style}
-          onClick={this.toggleShowPersons}>Show Name</button>
-        {/* 用arrow funciton會比較慢 */}
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <h1>HI, I'm react app</h1>
+          <p className={classes.join(' ')}>Hello mother fucker</p>
+          <button style={style}
+            onClick={this.toggleShowPersons}>Show Name</button>
+          {/* 用arrow funciton會比較慢 */}
+          {persons}
+        </div>
+      </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);
+// 這種deport 被function處理過的component 稱為higher order component?
+// 可以增加新的功能~
