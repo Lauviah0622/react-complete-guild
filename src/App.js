@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
 
@@ -8,12 +9,12 @@ class App extends Component {
   // state一改變 整個react DOM都會rerender
   state = {
     persons: [
-      { id: "qtasd" ,name: "Jack", age: "12" },
-      { id: "qweqt" ,name: "Jackw", age: "23" },
-      { id: "qeyyh" ,name: "Jacks", age: "34" }
+      { id: "qtasd", name: "Jack", age: "12" },
+      { id: "qweqt", name: "Jackw", age: "23" },
+      { id: "qeyyh", name: "Jacks", age: "34" }
     ],
     showPersons: false
-  }
+  };
 
 
   // class mehthod
@@ -29,18 +30,18 @@ class App extends Component {
     if (event.target.dataset.tag === 'name') {
       persons[personIndex].name = event.target.value;
     } else if (event.target.dataset.tag !== 'name') {
-      persons[personIndex].age = event.target.value;            
+      persons[personIndex].age = event.target.value;
     }
 
-    this.setState({persons: persons})
-  }
+    this.setState({ persons: persons })
+  };
 
   toggleShowPersons = () => {
     let showPersons = this.state.showPersons;
     this.setState({
       showPersons: !showPersons
     })
-  }
+  };
 
   deletePersonHandler = (personIndex) => {
     // const persons = this.state.persons.slice();
@@ -48,9 +49,9 @@ class App extends Component {
     // spread operator可以return array東西
     persons.splice(personIndex, 1)
     // 這裡直接更改原資料，會造成問題，應該先複製一個資料的副本再做更動
-    this.setState({persons: persons})
+    this.setState({ persons: persons })
     console.log(persons)
-  }
+  };
 
   render() {
 
@@ -63,13 +64,14 @@ class App extends Component {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
-            key={person.id}
-            click={() => this.deletePersonHandler(index)}
-            name={person.name}
-            age={person.age}
-            changed={(event) => this.nameChangeHandler(event, person.id)}
-            />
+            return <ErrorBoundary key={person.id}>
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                changed={(event) => this.nameChangeHandler(event, person.id)}
+              />
+            </ErrorBoundary>
           })}
         </div>
       )
@@ -93,19 +95,21 @@ class App extends Component {
       assignClasses.push(classes.bold);
     }
 
-    
+
 
     return (
-        <div className={classes.App}>
-          <h1>HI, I'm react app</h1>
-          <p className={assignClasses.join(' ')}>Hello mother fucker</p>
-          <button className={btnClass}
-            onClick={this.toggleShowPersons}>Show Name</button>
-          {/* 用arrow funciton會比較慢 */}
-          {persons}
-        </div>
+      <div className={classes.App}>
+        <h1>HI, I'm react app</h1>
+        <p className={assignClasses.join(' ')}>Hello mother fucker</p>
+        <button className={btnClass}
+          onClick={this.toggleShowPersons}>Show Name</button>
+        {/* 用arrow funciton會比較慢 */}
+        {persons}
+      </div>
     );
   }
 }
 
 export default App;
+// 這種deport 被function處理過的component 稱為higher order component?
+// 可以增加新的功能~
