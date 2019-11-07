@@ -12,3 +12,9 @@ input {
     margin: 4px;
     width: 120px;
 }
+
+@media (min-width: 500px) {
+    .Person {
+        width: 450px;
+    }
+}

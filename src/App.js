@@ -54,19 +54,8 @@ class App extends Component {
 
   render() {
 
-    let style = {
-      backgroundColor: "green",
-      borderRadius: '4px',
-      padding: "8px",
-      cursr: 'pointer',
-      font: 'inherit',
-      color: 'white',
-      transitionDuration: '0.4s',
-      ':hover': {
-        backgroundColor: 'lightgreen'
-      }
-    }
-
+    let btnClass = classes.btn;
+    console.log(typeof btnClass);
     let persons = null;
 
     // 將dom內容放在return外做if判斷
@@ -85,6 +74,8 @@ class App extends Component {
         </div>
       )
 
+      btnClass = [classes.red, classes.btn].join(' ')
+
     }
 
 
@@ -102,11 +93,13 @@ class App extends Component {
       assignClasses.push(classes.bold);
     }
 
+    
+
     return (
         <div className={classes.App}>
           <h1>HI, I'm react app</h1>
           <p className={assignClasses.join(' ')}>Hello mother fucker</p>
-          <button style={style}
+          <button className={btnClass}
             onClick={this.toggleShowPersons}>Show Name</button>
           {/* 用arrow funciton會比較慢 */}
           {persons}

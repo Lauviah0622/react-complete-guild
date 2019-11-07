@@ -24,12 +24,24 @@
   font-weight: bold;
 }
 
-.btn {
-  background-color: "green";
-  border-radius: '4px';
-  padding: "8px";
-  cursor: 'pointer';
-  font: 'inherit';
-  color: 'white';
-  transition-duration: '0.4s';
+.App .btn {
+  background-color: green;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  transition-duration: 0.4s;
+}
+
+.App .btn:hover {
+  background-color: lightgreen;
+}
+
+.App .btn.red {
+  background-color: red;
+}
+
+.App .btn.red:hover {
+  background-color: salmon;
 }
