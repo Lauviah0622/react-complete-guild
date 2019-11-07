@@ -14,7 +14,7 @@ class App extends Component {
       { id: "qeyyh", name: "Jacks", age: "34" }
     ],
     showPersons: false
-  }
+  };
 
 
   // class mehthod
@@ -34,14 +34,14 @@ class App extends Component {
     }
 
     this.setState({ persons: persons })
-  }
+  };
 
   toggleShowPersons = () => {
     let showPersons = this.state.showPersons;
     this.setState({
       showPersons: !showPersons
     })
-  }
+  };
 
   deletePersonHandler = (personIndex) => {
     // const persons = this.state.persons.slice();
@@ -51,7 +51,7 @@ class App extends Component {
     // 這裡直接更改原資料，會造成問題，應該先複製一個資料的副本再做更動
     this.setState({ persons: persons })
     console.log(persons)
-  }
+  };
 
   render() {
 
