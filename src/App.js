@@ -54,15 +54,8 @@ class App extends Component {
 
   render() {
 
-    let style = {
-      backgroundColor: "green",
-      border: "4px solid #ffcccc",
-      borderRadius: '4px',
-      padding: "8px",
-      cursr: 'pointer',
-      font: 'inherit'
-    }
-
+    let btnClass = classes.btn;
+    console.log(typeof btnClass);
     let persons = null;
 
     // 將dom內容放在return外做if判斷
@@ -81,18 +74,36 @@ class App extends Component {
         </div>
       )
 
-      style.backgroundColor = 'red'
+      btnClass = [classes.red, classes.btn].join(' ')
+
     }
 
+
+    let assignClasses = [];
+
+    if (this.state.persons.length <= 2) {
+      assignClasses.push(classes.red);
+    }
+
+    if (this.state.persons.length <= 1) {
+      assignClasses.push(classes.bold);
+    }
+
+    if (this.state.persons.length === 0) {
+      assignClasses.push(classes.bold);
+    }
+
+    
+
     return (
-      <div className="App">
-        <h1>HI, I'm react app</h1>
-        <p>Hello mother fucker</p>
-        <button style={style}
-          onClick={this.toggleShowPersons}>Show Name</button>
-        {/* 用arrow funciton會比較慢 */}
-        {persons}
-      </div>
+        <div className={classes.App}>
+          <h1>HI, I'm react app</h1>
+          <p className={assignClasses.join(' ')}>Hello mother fucker</p>
+          <button className={btnClass}
+            onClick={this.toggleShowPersons}>Show Name</button>
+          {/* 用arrow funciton會比較慢 */}
+          {persons}
+        </div>
     );
   }
 }
