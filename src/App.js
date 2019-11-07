@@ -91,15 +91,15 @@ class App extends Component {
     let assignClasses = [];
 
     if (this.state.persons.length <= 2) {
-      assignClasses.push(assignClasses.red);
+      assignClasses.push(classes.red);
     }
 
     if (this.state.persons.length <= 1) {
-      assignClasses.push(assignClasses.bold);
+      assignClasses.push(classes.bold);
     }
 
     if (this.state.persons.length === 0) {
-      assignClasses.push(assignClasses.bold);
+      assignClasses.push(classes.bold);
     }
 
     return (
