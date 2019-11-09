@@ -4,6 +4,10 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor')
+  }
 
   // state只有 class(extends Component)可以用, 如果function Component要用類似功能要用react hook
   // state一改變 整個react DOM都會rerender1
@@ -13,6 +17,42 @@ class App extends Component {
     { id: "qeyyh", name: "Jacks", age: "34" }
   ]
 
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDeriveStateFromProps', props)
+    return state;
+  }
+
+  // 重要, Both
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate', nextProps, nextState);
+    // return true || false來決定說要不要update
+    return true;
+  }
+
+  // 重要，Creation
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+  // 重要，Update
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log('[App.js] getSnapshotBeforeUpdate', prevProps, prevState);
+    return { message: 'App.js SnapShot!' }
+  }
+
+  // 重要，Update
+  componentDidUpdate(pervProps, prevState, snapshot) {
+    console.log('[App.js] componentDidUpdate')
+    console.log(pervProps, prevState, snapshot);
+  }
+
+  /*
+  componentWillMount() {
+    console.log('[App.js] componentWillMount');
+  }
+  */
+  // 上面的已經被棄用了，原本會在componentDidMount之前執行，現在已經被getDerivedStateFromProps取代
+
+
   state = {
     persons: [
       { id: "qtasd", name: "Jack", age: "12" },
@@ -21,6 +61,7 @@ class App extends Component {
     ],
     showPersons: false
   };
+  // 以前的寫法是要在constructor裡面this.state，現在可以直接拿出來寫，就相等於以前的寫法
 
 
   // class mehthod
@@ -62,12 +103,12 @@ class App extends Component {
     const originInfo = this.originalPersonsInfo.map(person => {
       return Object.assign({}, person)
     });
-    console.log(originInfo)
+    // console.log(originInfo)
     this.setState({ persons: originInfo })
   }
 
   render() {
-
+    console.log('[App.js] rendering...');
     let persons = null;
 
     // 將dom內容放在return外做if判斷
