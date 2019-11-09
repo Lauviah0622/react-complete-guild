@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
   // state只有 class(extends Component)可以用, 如果function Component要用類似功能要用react hook
-  // state一改變 整個react DOM都會rerender
+  // state一改變 整個react DOM都會rerender1
+  originalPersonsInfo = [
+    { id: "qtasd", name: "Jack", age: "12" },
+    { id: "qweqt", name: "Jackw", age: "23" },
+    { id: "qeyyh", name: "Jacks", age: "34" }
+  ]
+
   state = {
     persons: [
       { id: "qtasd", name: "Jack", age: "12" },
@@ -19,8 +25,8 @@ class App extends Component {
 
   // class mehthod
   nameChangeHandler = (event, id) => {
-    console.log(event.target.value)
-    console.dir(event.target.dataset)
+    // console.log(event.target.value)
+    // console.dir(event.target.dataset)
     const personIndex = this.state.persons.findIndex(person => {
       return person.id === id
     });
@@ -32,7 +38,6 @@ class App extends Component {
     } else if (event.target.dataset.tag !== 'name') {
       persons[personIndex].age = event.target.value;
     }
-
     this.setState({ persons: persons })
   };
 
@@ -53,56 +58,37 @@ class App extends Component {
     console.log(persons)
   };
 
+  restartPerson = () => {
+    const originInfo = this.originalPersonsInfo.map(person => {
+      return Object.assign({}, person)
+    });
+    console.log(originInfo)
+    this.setState({ persons: originInfo })
+  }
+
   render() {
 
-    let btnClass = classes.btn;
-    console.log(typeof btnClass);
     let persons = null;
 
     // 將dom內容放在return外做if判斷
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <ErrorBoundary key={person.id}>
-              <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                changed={(event) => this.nameChangeHandler(event, person.id)}
-              />
-            </ErrorBoundary>
-          })}
-        </div>
-      )
-
-      btnClass = [classes.red, classes.btn].join(' ')
-
-    }
-
-
-    let assignClasses = [];
-
-    if (this.state.persons.length <= 2) {
-      assignClasses.push(classes.red);
-    }
-
-    if (this.state.persons.length <= 1) {
-      assignClasses.push(classes.bold);
-    }
-
-    if (this.state.persons.length === 0) {
-      assignClasses.push(classes.bold);
+      persons = <Persons
+        clicked={this.deletePersonHandler}
+        changed={this.nameChangeHandler}
+        persons={this.state.persons} />
     }
 
 
 
     return (
       <div className={classes.App}>
-        <h1>HI, I'm react app</h1>
-        <p className={assignClasses.join(' ')}>Hello mother fucker</p>
-        <button className={btnClass}
-          onClick={this.toggleShowPersons}>Show Name</button>
+        <Cockpit
+          title={this.props.title}
+          showPersons={this.state.showPersons}
+          personsLength={this.state.persons.length}
+          buttonClick={this.toggleShowPersons}
+          buttonRestart={this.restartPerson}
+        />
         {/* 用arrow funciton會比較慢 */}
         {persons}
       </div>

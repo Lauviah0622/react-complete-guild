@@ -3,10 +3,6 @@ import classes from './Person.css';
 
 
 const person = (props) => {
-    let rdm = Math.random();
-    if (rdm > 0.7) {
-        throw new Error('Errorrrrrr')
-    }
 
     return (
         <div className={classes.Person}>
